@@ -1,15 +1,25 @@
 import React from "react";
-import { Text, Image, View, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
+import { RectButton, RectButtonProps} from 'react-native-gesture-handler'
 import { styles } from "./styles";
 
-export function ButtonIcon(){
-    const onPress = () => alert("Entrando...");
-    return(
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <View>
-                
-            </View>
-            <Text style={styles.title}>Entrar</Text>
-        </TouchableOpacity>
+
+type Props = RectButtonProps & {
+    title: string;
+}
+
+export function ButtonIcon({ title, ...rest }: Props) {
+    return (
+        <View style={styles.containerView}>
+            <RectButton
+                style={styles.container}
+                {...rest}
+            >
+                <Text style={styles.title}>
+                    {title}
+                </Text>
+
+            </RectButton>
+        </View>
     )
 }

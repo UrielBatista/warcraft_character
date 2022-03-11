@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { theme } from "../../global/styles/theme";
 
 export const styles = StyleSheet.create({
     container: {
@@ -9,10 +10,16 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+
+    containerView: {
+        height: 100
+    },
+
     title: {
         flex: 1,
         color: '#f8b700',
-        fontSize: 15,
-        textAlign: 'center',    
+        fontSize: 20,
+        fontFamily: theme.fonts.title700,
+        textAlign: 'center',
     }
 });
