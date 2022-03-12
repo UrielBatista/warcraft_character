@@ -1,8 +1,9 @@
 import React from "react";
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Home } from "../screens/Home";
 import { SingIn } from "../screens/SingIn";
+import { Home } from "../screens/Home";
+import { CharacterDatails } from "../screens/CharacterDatails";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -23,6 +24,10 @@ export function AuthRoutes() {
             <Screen
                 name="Home"
                 component={Home}
+            />
+            <Screen
+                name="CharacterDatails"
+                component={CharacterDatails}
             />
         </Navigator>
     )

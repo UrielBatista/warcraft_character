@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 
 import { Background } from "../../components/background";
-import { SearchProfile }   from '../../components/searchProfile'
+import { SearchProfile } from '../../components/searchProfile'
 
 import { Profile } from "../../components/profile";
 import { styles } from "./styles";
@@ -17,18 +17,20 @@ export function Home() {
     const { access_token } = route.params as Params
 
     return (
-        <Background>
-            <View>
-                <View style={styles.header}>
-                    <Profile />
-                </View>
-                <Text style={styles.sumary}>
-                    Busque as conquistas pvp do seu personagem de Word of Warcraft.
-                </Text>
+            <Background>
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <Profile />
+                        </View>
+                        <Text style={styles.sumary}>
+                            Busque as conquistas pvp do seu personagem de Word of Warcraft.
+                        </Text>
 
-                {/* colocar um input que abranja 2 campos para enviar request API */}
-                <SearchProfile name={access_token}/>
-                </View>
-        </Background>
+                        {/* colocar um input que abranja 2 campos para enviar request API */}
+                        <SearchProfile name={access_token} />
+                    </View>
+                </ScrollView>
+            </Background>
     );
 }
