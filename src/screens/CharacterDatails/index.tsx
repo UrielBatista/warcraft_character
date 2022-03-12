@@ -4,10 +4,18 @@ import { useRoute } from "@react-navigation/native";
 
 import { Background } from "../../components/background";
 import { ButtonIcon } from "../../components/buttonicon";
+import { Load } from "../../components/Load";
+import { Health } from "../../components/SvgIcons/Health";
 
-
+import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./styles";
+import { BorderlessButton } from "react-native-gesture-handler";
+import { Stamina } from "../../components/SvgIcons/Stamina";
+import { CriticStrike } from "../../components/SvgIcons/CriticStrik";
+import { Haste } from "../../components/SvgIcons/Haste";
+import { Maestry } from "../../components/SvgIcons/Maestry";
+import { Versatility } from "../../components/SvgIcons/Versatility";
 
 type ParamsToBackHome = {
     value: string
@@ -17,6 +25,8 @@ type ParamsToBackHome = {
 }
 
 export function CharacterDatails() {
+    const [loading, setLoading] = useState(true);
+
     const navigation = useNavigation();
     const route = useRoute();
     const { value, access_token, kingdom_character, profile_character } = route.params as ParamsToBackHome
@@ -27,6 +37,7 @@ export function CharacterDatails() {
     const [haste, setHaste] = useState();
     const [maestry, setMaestry] = useState();
     const [versatility, setVersatility] = useState();
+
 
 
     const kingdom = kingdom_character
@@ -49,11 +60,12 @@ export function CharacterDatails() {
                 setHaste(data.melee_haste.value);
                 setMaestry(data.mastery.value);
                 setVersatility(data.versatility_damage_done_bonus);
+                setLoading(false)
             })
             .catch(() => Alert.alert('Dados não carregados!'));
     });
 
-    function handleClickImage(){
+    function handleClickImage() {
         Alert.alert('Clicked in image!!');
     }
 
@@ -64,66 +76,84 @@ export function CharacterDatails() {
     return (
         <Background>
             <ScrollView>
-                <View style={styles.container}>
-                    <Text style={styles.sumary}>
-                        E aqui está as informações do personagem.
-                    </Text>
+                {loading ? <Load /> :
 
-                    {/* Iterar no JSON em que retorna do personagem pesquisado */}
-                    <Text style={styles.name}>
-                        {profile_character}
-                    </Text>
-                    <TouchableHighlight style={styles.touchableImage} onPress={handleClickImage}>
-                        <Image
-                            source={{ uri: imageCharacter }}
-                            style={styles.image}
-                        />
-                    </TouchableHighlight>
+                    <View style={styles.container}>
 
-                    <Text style={styles.classCharacter}>
-                        Rogue - Subtlety
-                    </Text>
 
-                    <View style={styles.attributes1}>
-                        <Text style={styles.life}>
-                            Vida {'\n'}
-                            {life}
+                        <View style={styles.header}>
+                            <BorderlessButton onPress={handleBack}>
+                                <Feather
+                                    name="arrow-left"
+                                    size={24}
+                                    color={'#FFF'}
+                                />
+                            </BorderlessButton>
+                        </View>
+                        <Text style={styles.sumary}>
+                            E aqui está as informações do personagem.
                         </Text>
 
-                        <Text style={styles.vigor}>
-                            Vigor {'\n'}
-                            {stamina}
+                        {/* Iterar no JSON em que retorna do personagem pesquisado */}
+                        <Text style={styles.name}>
+                            {profile_character}
                         </Text>
+                        <TouchableHighlight style={styles.touchableImage} onPress={handleClickImage}>
+                            <Image
+                                source={{ uri: imageCharacter }}
+                                style={styles.image}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={styles.classCharacter}>
+                            Rogue - Subtlety
+                        </Text>
+
+                        <View style={styles.attributes1}>
+                            <Health />
+                            <Text style={styles.life}>
+                                Health {'\n'}
+                                {life}
+                            </Text>
+                            <Stamina/>
+                            <Text style={styles.vigor}>
+                                Stamina {'\n'}
+                                {stamina}
+                            </Text>
+                        </View>
+
+                        <View style={styles.attributes2}>
+                            <CriticStrike/>
+                            <Text style={styles.critc}>
+                                Critc {'\n'}
+                                {critic}
+                            </Text>
+                            <Haste/>
+                            <Text style={styles.acceleration}>
+                                Haste {'\n'}
+                                {haste}
+                            </Text>
+                        </View>
+
+                        <View style={styles.attributes3}>
+                            <Maestry/>
+                            <Text style={styles.maestry}>
+                                Maestry {'\n'}
+                                {maestry}
+                            </Text>
+                            <Versatility/>
+                            <Text style={styles.versatility}>
+                                Versatility {'\n'}
+                                {versatility}
+                            </Text>
+                        </View>
+
+                        <ButtonIcon title="PvP Ranking" />
+                        {/* <ButtonIcon title="Back" onPress={handleBack} /> */}
+
                     </View>
 
-                    <View style={styles.attributes2}>
-                        <Text style={styles.critc}>
-                            Critc {'\n'}
-                            {critic}
-                        </Text>
-
-                        <Text style={styles.acceleration}>
-                            Acceleration {'\n'}
-                            {haste}
-                        </Text>
-                    </View>
-
-                    <View style={styles.attributes3}>
-                        <Text style={styles.maestry}>
-                            Maestry {'\n'}
-                            {maestry}
-                        </Text>
-
-                        <Text style={styles.versatility}>
-                            Versatility {'\n'}
-                            {versatility}
-                        </Text>
-                    </View>
-
-                    <ButtonIcon title="PvP Ranking" />
-                    <ButtonIcon title="Back" onPress={handleBack} />
-
-                </View>
+                }
             </ScrollView>
         </Background>
     );
