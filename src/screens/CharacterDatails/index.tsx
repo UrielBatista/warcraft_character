@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, Image, Alert, TouchableHighlight, FlatList } from 'react-native';
+import { View, Text, ScrollView, Image, Alert, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 
 import { Background } from "../../components/background";
@@ -16,6 +16,8 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./styles";
 import { BorderlessButton } from "react-native-gesture-handler";
+import { ModalView } from "../../components/ModalView";
+import { AchivmentsPvP } from "../AchivmentsPvP";
 
 
 type ParamsToBackHome = {
@@ -39,9 +41,11 @@ export function CharacterDatails() {
     const [maestry, setMaestry] = useState(Number);
     const [versatility, setVersatility] = useState(Number);
 
+    
     const [classCharacter, setClassCharacter] = useState('')
     const [specCharacter, setSpecCharacter] = useState('')
-
+    
+    const [openModalView, setOpenModalView] = useState(false);
     const [rendenizeClassCharacterSpec, setRendenizeClassCharacterSpec] = useState(true)
 
 
@@ -87,12 +91,20 @@ export function CharacterDatails() {
             .then(data => {
                 setClassCharacter(data.playable_class.name);
                 setSpecCharacter(data.active_spec.name);
-                if (rendenizeClassCharacterSpec == true){
+                if (rendenizeClassCharacterSpec == true) {
                     setRendenizeClassCharacterSpec(false);
-                }else{
+                } else {
                     setRendenizeClassCharacterSpec(true);
                 }
             }).catch(() => console.log('Nothing data!!'))
+    }
+
+    function handleOpenModalView() {
+        setOpenModalView(true);
+    }
+
+    function handleCloseModalView() {
+        setOpenModalView(false);
     }
 
     function handleBack() {
@@ -105,7 +117,6 @@ export function CharacterDatails() {
                 {loading ? <Load /> :
 
                     <View style={styles.container}>
-
 
                         <View style={styles.header}>
                             <BorderlessButton onPress={handleBack}>
@@ -200,10 +211,12 @@ export function CharacterDatails() {
                             </View>
                         </View>
 
-                        <ButtonIcon title="PvP Ranking" />
+                        <ButtonIcon title="PvP Ranking" onPress={handleOpenModalView} />
+                        <ModalView visible={openModalView} closeModal={handleCloseModalView}>
+                            <AchivmentsPvP kingdom={kingdom} profile={profile} access_token={access_token}/>
+                        </ModalView>
 
                     </View>
-
                 }
             </ScrollView>
         </Background>
