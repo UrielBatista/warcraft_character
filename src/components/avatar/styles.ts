@@ -4,14 +4,14 @@ export const styles = StyleSheet.create({
   container: {
     width: 49,
     height: 49,
-    borderRadius: 8,
+    borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 22
   },
   avatar: {
-    width: 46,
-    height: 46,
+    width: 57,
+    height: 57,
     borderRadius: 8
   }
 });

@@ -61,63 +61,81 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         color: '#FFF',
     },
-    attributes1: {
+    iconsAttributs: {
+        flex: 1,
+        paddingVertical: 20,
+        marginRight: 20,
         flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 20
+        justifyContent: 'space-between',
     },
-    life: {
+    health: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 50,
+    },
+    textHealth: {
         fontFamily: theme.fonts.title500,
-        fontSize: 15,
-        textAlign: 'center',
+        fontSize: 18,
         color: '#FFF',
-        marginRight: 100
     },
-    vigor: {
-        fontFamily: theme.fonts.title500,
-        fontSize: 15,
-        textAlign: 'center',
-        color: '#FFF'
-    },
-    attributes2: {
+    stamina: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 20
+        justifyContent: 'space-between',
+        paddingHorizontal: 30,
     },
-    critc: {
-        flexDirection: 'row',
+    textStamina:{
         fontFamily: theme.fonts.title500,
-        textAlign: 'center',
-        fontSize: 15,
+        fontSize: 18,
         color: '#FFF',
-        marginRight: 100
     },
-    acceleration: {
-        fontFamily: theme.fonts.title500,
-        textAlign: 'center',
-        fontSize: 15,
-        color: '#FFF'
-    },
-    attributes3: {
+    critic: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 20,
-        marginBottom: 100
+        justifyContent: 'space-between',
+        paddingHorizontal: 30,
+        
+    },
+    textCritc:{
+        fontFamily: theme.fonts.title500,
+        fontSize: 18,
+        color: '#FFF',
+    },
+    haste: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 45,
+        marginLeft: 14,
+        marginRight: -14
+        
+    },
+    textHaste:{
+        fontFamily: theme.fonts.title500,
+        fontSize: 18,
+        color: '#FFF',
     },
     maestry: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 45,
+        marginLeft: 18,
+        marginRight: -18
+        
+    },
+    textMaestry:{
         fontFamily: theme.fonts.title500,
-        textAlign: 'center',
-        fontSize: 15,
-        color: '#FFF',
-        marginRight: 100,
-        marginLeft: 10
+        fontSize: 18,
+        color: '#FFF'
     },
     versatility: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 30,
+        marginLeft: 8,
+        marginRight: -8
+        
+    },
+    textVersatility:{
         fontFamily: theme.fonts.title500,
-        textAlign: 'center',
-        fontSize: 15,
+        fontSize: 18,
         color: '#FFF'
     }
 });

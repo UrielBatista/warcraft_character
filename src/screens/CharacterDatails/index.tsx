@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, Image, Alert, TouchableHighlight } from 'react-native';
+import { View, Text, ScrollView, Image, Alert, TouchableHighlight, FlatList } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 
 import { Background } from "../../components/background";
 import { ButtonIcon } from "../../components/buttonicon";
 import { Load } from "../../components/Load";
 import { Health } from "../../components/SvgIcons/Health";
-
-import { Feather } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
-import { styles } from "./styles";
-import { BorderlessButton } from "react-native-gesture-handler";
 import { Stamina } from "../../components/SvgIcons/Stamina";
 import { CriticStrike } from "../../components/SvgIcons/CriticStrik";
 import { Haste } from "../../components/SvgIcons/Haste";
 import { Maestry } from "../../components/SvgIcons/Maestry";
 import { Versatility } from "../../components/SvgIcons/Versatility";
+
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
+import { styles } from "./styles";
+import { BorderlessButton } from "react-native-gesture-handler";
+
 
 type ParamsToBackHome = {
     value: string
@@ -31,12 +32,17 @@ export function CharacterDatails() {
     const route = useRoute();
     const { value, access_token, kingdom_character, profile_character } = route.params as ParamsToBackHome
 
-    const [life, setLife] = useState();
+    const [health, setHealth] = useState();
     const [stamina, setStamina] = useState();
-    const [critic, setCritic] = useState();
-    const [haste, setHaste] = useState();
-    const [maestry, setMaestry] = useState();
-    const [versatility, setVersatility] = useState();
+    const [critic, setCritic] = useState(Number);
+    const [haste, setHaste] = useState(Number);
+    const [maestry, setMaestry] = useState(Number);
+    const [versatility, setVersatility] = useState(Number);
+
+    const [classCharacter, setClassCharacter] = useState('')
+    const [specCharacter, setSpecCharacter] = useState('')
+
+    const [rendenizeClassCharacterSpec, setRendenizeClassCharacterSpec] = useState(true)
 
 
 
@@ -54,19 +60,39 @@ export function CharacterDatails() {
         fetch(characterUrl)
             .then(response => response.json())
             .then(data => {
-                setLife(data.health);
+
+                const dataCritc = Math.round(data.melee_crit.value)
+                const dataHaste = Math.round(data.melee_haste.value)
+                const dataMaestry = Math.round(data.mastery.value)
+                const dataVersartility = Math.round(data.versatility_damage_done_bonus)
+
+                setHealth(data.health);
                 setStamina(data.stamina.effective);
-                setCritic(data.melee_crit.value);
-                setHaste(data.melee_haste.value);
-                setMaestry(data.mastery.value);
-                setVersatility(data.versatility_damage_done_bonus);
+                setCritic(dataCritc);
+                setHaste(dataHaste);
+                setMaestry(dataMaestry);
+                setVersatility(dataVersartility);
                 setLoading(false)
             })
             .catch(() => Alert.alert('Dados não carregados!'));
     });
 
     function handleClickImage() {
-        Alert.alert('Clicked in image!!');
+        const NAMESPACE = 'profile-us'
+        const LOCAL = 'en_US'
+        const REGION = 'us'
+        const appearenceUrl = `https://us.api.blizzard.com/profile/wow/character/${kingdom}/${profile}/appearance?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
+        fetch(appearenceUrl)
+            .then(response => response.json())
+            .then(data => {
+                setClassCharacter(data.playable_class.name);
+                setSpecCharacter(data.active_spec.name);
+                if (rendenizeClassCharacterSpec == true){
+                    setRendenizeClassCharacterSpec(false);
+                }else{
+                    setRendenizeClassCharacterSpec(true);
+                }
+            }).catch(() => console.log('Nothing data!!'))
     }
 
     function handleBack() {
@@ -94,10 +120,10 @@ export function CharacterDatails() {
                             E aqui está as informações do personagem.
                         </Text>
 
-                        {/* Iterar no JSON em que retorna do personagem pesquisado */}
                         <Text style={styles.name}>
                             {profile_character}
                         </Text>
+
                         <TouchableHighlight style={styles.touchableImage} onPress={handleClickImage}>
                             <Image
                                 source={{ uri: imageCharacter }}
@@ -105,51 +131,76 @@ export function CharacterDatails() {
                             />
                         </TouchableHighlight>
 
-                        <Text style={styles.classCharacter}>
-                            Rogue - Subtlety
-                        </Text>
+                        {/* Hidden and notHidden text element with boolean */}
+                        {rendenizeClassCharacterSpec ?
+                            <Text style={styles.classCharacter}></Text> :
+                            <Text style={styles.classCharacter}>
+                                {classCharacter} - {specCharacter}
+                            </Text>
+                        }
 
-                        <View style={styles.attributes1}>
-                            <Health />
-                            <Text style={styles.life}>
-                                Health {'\n'}
-                                {life}
-                            </Text>
-                            <Stamina/>
-                            <Text style={styles.vigor}>
-                                Stamina {'\n'}
-                                {stamina}
-                            </Text>
+                        <View style={styles.iconsAttributs}>
+                            <View style={styles.health}>
+                                <Health />
+                                <View style={{ marginBottom: 20, }}>
+                                    <Text style={styles.textHealth}>
+                                        Health {'\n'}
+                                        {health}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.stamina}>
+                                <Stamina />
+                                <View style={{ marginBottom: 20 }}>
+                                    <Text style={styles.textStamina}>
+                                        Stamina {'\n'}
+                                        {stamina}
+                                    </Text>
+                                </View>
+                            </View>
                         </View>
-
-                        <View style={styles.attributes2}>
-                            <CriticStrike/>
-                            <Text style={styles.critc}>
-                                Critc {'\n'}
-                                {critic}
-                            </Text>
-                            <Haste/>
-                            <Text style={styles.acceleration}>
-                                Haste {'\n'}
-                                {haste}
-                            </Text>
+                        <View style={styles.iconsAttributs}>
+                            <View style={styles.critic}>
+                                <CriticStrike />
+                                <View style={{ marginBottom: 20, }}>
+                                    <Text style={styles.textCritc}>
+                                        Critic {'\n'}
+                                        {critic}%
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.haste}>
+                                <Haste />
+                                <View style={{ marginBottom: 20 }}>
+                                    <Text style={styles.textHaste}>
+                                        Haste {'\n'}
+                                        {haste}%
+                                    </Text>
+                                </View>
+                            </View>
                         </View>
-
-                        <View style={styles.attributes3}>
-                            <Maestry/>
-                            <Text style={styles.maestry}>
-                                Maestry {'\n'}
-                                {maestry}
-                            </Text>
-                            <Versatility/>
-                            <Text style={styles.versatility}>
-                                Versatility {'\n'}
-                                {versatility}
-                            </Text>
+                        <View style={styles.iconsAttributs}>
+                            <View style={styles.maestry}>
+                                <Maestry />
+                                <View style={{ marginBottom: 20, }}>
+                                    <Text style={styles.textMaestry}>
+                                        Maestry {'\n'}
+                                        {maestry}%
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.versatility}>
+                                <Versatility />
+                                <View style={{ marginBottom: 20 }}>
+                                    <Text style={styles.textVersatility}>
+                                        Versatility {'\n'}
+                                        {versatility}%
+                                    </Text>
+                                </View>
+                            </View>
                         </View>
 
                         <ButtonIcon title="PvP Ranking" />
-                        {/* <ButtonIcon title="Back" onPress={handleBack} /> */}
 
                     </View>
 

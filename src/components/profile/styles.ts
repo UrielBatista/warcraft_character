@@ -6,7 +6,11 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-
+    avatarTouchable: {
+        width: 57,
+        height: 50,
+        borderRadius: 100
+    },
     user: {
         flexDirection: 'row',
 
