@@ -87,6 +87,7 @@ export function SearchProfile(data: any) {
                     <Picker.Item label="Goldrinn" value="goldrinn" />
                     <Picker.Item label="Nemesis" value="nemesis" />
                     <Picker.Item label="Tol Barad" value="tol-barad" />
+                    <Picker.Item label="Tichondrius" value="tichondrius" />
                 </Picker>
 
                 <Text style={styles.divider}>

@@ -11,25 +11,27 @@ export const styles = StyleSheet.create({
         paddingTop: 24
         
     },
-    notRank: {
+    imageRank: {
         marginTop: 20,
         height: 100,
         width: 100,
     },
-    rankOne: {
+    rank: {
         fontFamily: theme.fonts.title500,
         fontSize: 18,
+        textAlign: 'center',
         color: '#FFF',
-        paddingHorizontal: 50,
+        paddingHorizontal: 100,
         paddingTop: 20
     },
     typePvP: {
         fontFamily: theme.fonts.title700,
         fontSize: 22,
         color: '#f8b700',
-        padding: 20,
-        marginTop: 22,
-        borderWidth: 1,
+        padding: 5,
+        textAlign: 'center',
+        marginTop: 26,
+        borderWidth: 3,
         borderRadius: 10,
         borderColor: '#f8b700',
     },

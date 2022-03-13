@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image, Alert } from "react-native";
 import { Background } from "../../components/background";
 
-import typeInsignia from "./typesInsignia";
-
 import { styles } from "./styles";
 
 
@@ -24,10 +22,10 @@ export function AchivmentsPvP(props: any) {
         fetch(pvp2x2Url)
             .then(response => response.json())
             .then(data => {
-                if (data.code == 404){
+                if (data.code == 404) {
                     setRankx2(0);
                     chackInsigniax2(0)
-                }else {
+                } else {
                     setRankx2(data.rating);
                     chackInsigniax2(data.rating)
                 }
@@ -37,10 +35,10 @@ export function AchivmentsPvP(props: any) {
         fetch(pvp3x3Url)
             .then(response => response.json())
             .then(data => {
-                if (data.code == 404){
+                if (data.code == 404) {
                     setRankx3(0);
                     chackInsigniax3(0)
-                }else {
+                } else {
                     setRankx3(data.rating);
                     chackInsigniax3(data.rating)
                 }
@@ -48,76 +46,75 @@ export function AchivmentsPvP(props: any) {
             .catch(() => Alert.alert('Dados não carregados!'));
     });
 
-    function chackInsigniax2(rank: number){
-        if (rank <= 1399){
+    function chackInsigniax2(rank: number) {
+        if (rank <= 1399) {
             setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/RJ6XE5WS8D6G1528483047503.png')
         }
-        else if (rank >= 1400 && rank <= 1600){
+        else if (rank >= 1400 && rank <= 1600) {
             setInsigniax2('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_02.png')
         }
-        else if (rank >= 1600 && rank <= 1800){
+        else if (rank >= 1600 && rank <= 1800) {
             setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/Q4TDZMWJS1DC1528483047584.png')
         }
-        else if (rank >= 1800 && rank <= 2100){
+        else if (rank >= 1800 && rank <= 2100) {
             setInsigniax2('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_04.png')
         }
-        else if (rank >= 2100 && rank <= 2400){
+        else if (rank >= 2100 && rank <= 2400) {
             setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/9WPOSOBTK7GY1528483047820.png')
         }
-        else if (rank > 2400){
+        else if (rank > 2400) {
             setInsigniax2('https://www.wowchakra.com/wp-content/uploads/gallery/BFA_Ranked_PvP/UI_RankedPvP_07.png')
         }
     }
 
-    function chackInsigniax3(rank: number){
-        if (rank <= 1399){
+    function chackInsigniax3(rank: number) {
+        if (rank <= 1399) {
             setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/RJ6XE5WS8D6G1528483047503.png')
         }
-        else if (rank >= 1400 && rank <= 1600){
+        else if (rank >= 1400 && rank <= 1600) {
             setInsigniax3('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_02.png')
         }
-        else if (rank >= 1600 && rank <= 1800){
+        else if (rank >= 1600 && rank <= 1800) {
             setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/Q4TDZMWJS1DC1528483047584.png')
         }
-        else if (rank >= 1800 && rank <= 2100){
+        else if (rank >= 1800 && rank <= 2100) {
             setInsigniax3('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_04.png')
         }
-        else if (rank >= 2100 && rank <= 2400){
+        else if (rank >= 2100 && rank <= 2400) {
             setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/9WPOSOBTK7GY1528483047820.png')
         }
-        else if (rank > 2400){
+        else if (rank > 2400) {
             setInsigniax3('https://www.wowchakra.com/wp-content/uploads/gallery/BFA_Ranked_PvP/UI_RankedPvP_07.png')
         }
     }
 
     return (
         <Background>
+            <Text style={styles.typePvP}>
+                2x2
+            </Text>
             <View style={styles.container}>
                 <Image
-                    style={styles.notRank}
-                    source={{uri: insigniax2 !=="" ? insigniax2 : undefined }}
+                    style={styles.imageRank}
+                    source={{ uri: insigniax2 !== "" ? insigniax2 : undefined }}
 
                 />
-                <Text style={styles.rankOne}>
+                <Text style={styles.rank}>
                     {rankx2}
                 </Text>
-                <Text style={styles.typePvP}>
-                    2x2
-                </Text>
             </View>
+            <Text style={styles.typePvP}>
+                3x3
+            </Text>
             <View style={styles.container}>
                 <Image
-                    style={styles.notRank}
-                    source={{ uri: insigniax3 !=="" ? insigniax3 : undefined }}
+                    style={styles.imageRank}
+                    source={{ uri: insigniax3 !== "" ? insigniax3 : undefined }}
 
                 />
-                <Text style={styles.rankOne}>
+                <Text style={styles.rank}>
                     {rankx3}
                 </Text>
-                <Text style={styles.typePvP}>
-                    3x3
-                </Text>
-
             </View>
         </Background>
     )
