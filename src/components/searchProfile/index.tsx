@@ -3,6 +3,7 @@ import { View, Text, Alert } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 
+import envs from '../../Config/env';
 import { ImputData } from '../inputData'
 import { ButtonIcon } from '../buttonicon'
 import { styles } from "./styles";
@@ -15,6 +16,8 @@ type RequestCharacter = {
 }
 
 export function SearchProfile(data: any) {
+    const { API, NAMESPACE, LOCAL, REGION } = envs;
+
     const navigation = useNavigation();
     const [kingdom, setKingdom] = useState('Azralon');
     const [profile, setProfile] = useState('');
@@ -24,12 +27,10 @@ export function SearchProfile(data: any) {
 
 
     const handleSendInput = () => {
-        const NAMESPACE = 'profile-us'
-        const LOCAL = 'en_US'
-        const REGION = 'us'
         const requestKingdom = kingdom.toLocaleLowerCase();
         const requestProfile = profile.toLocaleLowerCase();
-        const characterUrl = `https://us.api.blizzard.com/profile/wow/character/${requestKingdom}/${requestProfile}/character-media?namespace=${NAMESPACE}&locale=${LOCAL}&%3Aregion=${REGION}&access_token=${data.name}`
+        const characterUrl = `${API}/${requestKingdom}/${requestProfile}/character-media?namespace=${NAMESPACE}&locale=${LOCAL}&%3Aregion=${REGION}&access_token=${data.name}`
+
         fetch(characterUrl)
             .then(response => response.json())
             .then(data => {
@@ -60,13 +61,11 @@ export function SearchProfile(data: any) {
     const cleanInputs = () => {
         setKingdom('Azralon')
         setProfile('')
-        
     }
 
     function backToSignIn() {
         navigation.navigate('SingIn' as never);
     }
-
 
     return (
         <View style={styles.container}>

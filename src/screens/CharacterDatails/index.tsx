@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, Image, Alert, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 
+import envs from '../../Config/env';
 import { Background } from "../../components/background";
 import { ButtonIcon } from "../../components/buttonicon";
 import { Load } from "../../components/Load";
@@ -28,6 +29,7 @@ type ParamsToBackHome = {
 }
 
 export function CharacterDatails() {
+    const { NAMESPACE, LOCAL, API } = envs;
     const [loading, setLoading] = useState(true);
 
     const navigation = useNavigation();
@@ -55,11 +57,7 @@ export function CharacterDatails() {
     const imageCharacter = value;
 
     useEffect(() => {
-
-        const NAMESPACE = 'profile-us'
-        const LOCAL = 'en_US'
-        const REGION = 'us'
-        const characterUrl = `https://us.api.blizzard.com/profile/wow/character/${kingdom}/${profile}/statistics?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
+        const characterUrl = `${API}/${kingdom}/${profile}/statistics?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
 
         fetch(characterUrl)
             .then(response => response.json())
@@ -82,20 +80,15 @@ export function CharacterDatails() {
     });
 
     function handleClickImage() {
-        const NAMESPACE = 'profile-us'
-        const LOCAL = 'en_US'
-        const REGION = 'us'
-        const appearenceUrl = `https://us.api.blizzard.com/profile/wow/character/${kingdom}/${profile}/appearance?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
+        const appearenceUrl = `${API}/${kingdom}/${profile}/appearance?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
+
         fetch(appearenceUrl)
             .then(response => response.json())
             .then(data => {
                 setClassCharacter(data.playable_class.name);
                 setSpecCharacter(data.active_spec.name);
-                if (rendenizeClassCharacterSpec == true) {
-                    setRendenizeClassCharacterSpec(false);
-                } else {
-                    setRendenizeClassCharacterSpec(true);
-                }
+                rendenizeClassCharacterSpec == true ? setRendenizeClassCharacterSpec(false) : setRendenizeClassCharacterSpec(true)
+
             }).catch(() => console.log('Nothing data!!'))
     }
 

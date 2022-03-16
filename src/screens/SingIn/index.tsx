@@ -1,26 +1,25 @@
 import React, { useState } from "react";
+import envs from '../../Config/env';
+
 import { useNavigation } from "@react-navigation/native";
 import { View, Text } from 'react-native';
 
 import { ButtonIcon } from "../../components/buttonicon";
-// import Landscape from '../../assets/landscape.png';
 import { VideoComponent } from '../../components/videoComponent';
 
 import { styles } from "./styles";
-
 
 type TokenReponse = {
     access_token: string;
 }
 
 export function SingIn() {
+    const { CLIENT_ID, CLIENT_SECRET, API_AUTH } = envs;
     const navigation = useNavigation();
     const [dataToken, setDataToken] = useState({})
 
     async function handleSignIn() {
-        const CLIENT_ID = '60113aad7d1c422997d719069b192ef9'
-        const CLIENT_SECRET = 'T4FoTKRQvz56fVYgzz06r2TMyVEuz7eC'
-        const authUrl = `https://us.battle.net/oauth/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`
+        const authUrl = `${API_AUTH}client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`
 
         const requestOptions = {
             method: 'POST',
