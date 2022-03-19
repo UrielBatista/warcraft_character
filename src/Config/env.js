@@ -5,7 +5,15 @@ import {
     LOCAL, 
     REGION, 
     CLIENT_ID, 
-    CLIENT_SECRET } from "@env"
+    CLIENT_SECRET,
+    LOW_CR,
+    COMBATENT,
+    DESAFIANT,
+    RIVAL,
+    DUELIST,
+    GLADIATOR
+
+} from "@env"
 
 const environmentVariables = {
     API,
@@ -14,7 +22,13 @@ const environmentVariables = {
     LOCAL,
     REGION,
     CLIENT_ID,
-    CLIENT_SECRET
+    CLIENT_SECRET,
+    LOW_CR,
+    COMBATENT,
+    DESAFIANT,
+    RIVAL,
+    DUELIST,
+    GLADIATOR
 }
 
 export default environmentVariables

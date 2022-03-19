@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, Image, Alert, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 
-import envs from '../../Config/env';
 import { Background } from "../../components/background";
 import { ButtonIcon } from "../../components/buttonicon";
 import { Load } from "../../components/Load";
@@ -12,6 +11,7 @@ import { CriticStrike } from "../../components/SvgIcons/CriticStrik";
 import { Haste } from "../../components/SvgIcons/Haste";
 import { Maestry } from "../../components/SvgIcons/Maestry";
 import { Versatility } from "../../components/SvgIcons/Versatility";
+import { GetAttributesDetailsCharacter, GetClassCharacterSpec } from "../../services/getCharacterDetails";
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -29,7 +29,6 @@ type ParamsToBackHome = {
 }
 
 export function CharacterDatails() {
-    const { NAMESPACE, LOCAL, API } = envs;
     const [loading, setLoading] = useState(true);
 
     const navigation = useNavigation();
@@ -43,53 +42,46 @@ export function CharacterDatails() {
     const [maestry, setMaestry] = useState(Number);
     const [versatility, setVersatility] = useState(Number);
 
-    
     const [classCharacter, setClassCharacter] = useState('')
     const [specCharacter, setSpecCharacter] = useState('')
-    
+
     const [openModalView, setOpenModalView] = useState(false);
     const [rendenizeClassCharacterSpec, setRendenizeClassCharacterSpec] = useState(true)
-
-
 
     const kingdom = kingdom_character
     const profile = profile_character.toLocaleLowerCase();
     const imageCharacter = value;
 
     useEffect(() => {
-        const characterUrl = `${API}/${kingdom}/${profile}/statistics?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
+        const attributesCharacterDetails = GetAttributesDetailsCharacter(kingdom, profile, access_token);
+        attributesCharacterDetails.then((props) => {
+            const dataCritc = Math.round(props.melee_crit.value);
+            const dataHaste = Math.round(props.melee_haste.value);
+            const dataMaestry = Math.round(props.mastery.value);
+            const dataVersartility = Math.round(props.versatility_damage_done_bonus);
 
-        fetch(characterUrl)
-            .then(response => response.json())
-            .then(data => {
+            setHealth(props.health);
+            setStamina(props.stamina.effective);
+            setCritic(dataCritc);
+            setHaste(dataHaste);
+            setMaestry(dataMaestry);
+            setVersatility(dataVersartility);
+            setLoading(false);
 
-                const dataCritc = Math.round(data.melee_crit.value)
-                const dataHaste = Math.round(data.melee_haste.value)
-                const dataMaestry = Math.round(data.mastery.value)
-                const dataVersartility = Math.round(data.versatility_damage_done_bonus)
-
-                setHealth(data.health);
-                setStamina(data.stamina.effective);
-                setCritic(dataCritc);
-                setHaste(dataHaste);
-                setMaestry(dataMaestry);
-                setVersatility(dataVersartility);
-                setLoading(false)
-            })
-            .catch(() => Alert.alert('Dados não carregados!'));
+        }).catch(() => {
+            Alert.alert('Dados não carregados!')
+        });
     });
 
     function handleClickImage() {
-        const appearenceUrl = `${API}/${kingdom}/${profile}/appearance?namespace=${NAMESPACE}&locale=${LOCAL}&access_token=${access_token}`
-
-        fetch(appearenceUrl)
-            .then(response => response.json())
-            .then(data => {
-                setClassCharacter(data.playable_class.name);
-                setSpecCharacter(data.active_spec.name);
-                rendenizeClassCharacterSpec == true ? setRendenizeClassCharacterSpec(false) : setRendenizeClassCharacterSpec(true)
-
-            }).catch(() => console.log('Nothing data!!'))
+        const classCharacterSpec = GetClassCharacterSpec(kingdom, profile, access_token);
+        classCharacterSpec.then((props) => {
+            setClassCharacter(props.playable_class.name);
+            setSpecCharacter(props.active_spec.name);
+            rendenizeClassCharacterSpec == true ? setRendenizeClassCharacterSpec(false) : setRendenizeClassCharacterSpec(true);
+        }).catch(() => {
+            console.log('Nothing data!!');
+        });
     }
 
     function handleOpenModalView() {
@@ -206,7 +198,7 @@ export function CharacterDatails() {
 
                         <ButtonIcon title="PvP Ranking" onPress={handleOpenModalView} />
                         <ModalView visible={openModalView} closeModal={handleCloseModalView}>
-                            <AchivmentsPvP kingdom={kingdom} profile={profile} access_token={access_token}/>
+                            <AchivmentsPvP kingdom={kingdom} profile={profile} access_token={access_token} />
                         </ModalView>
 
                     </View>

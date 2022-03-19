@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
+import envs from '../../Config/env';
+
 import { View, Text, Image, Alert } from "react-native";
 import { Background } from "../../components/background";
+import { GetRanked2x2, GetRanked3x3 } from '../../services/getPvPdata';
 
 import { styles } from "./styles";
 
 
 export function AchivmentsPvP(props: any) {
+    const { LOW_CR, COMBATENT, DESAFIANT, RIVAL, DUELIST, GLADIATOR } = envs;
+
     const [rankx2, setRankx2] = useState(Number);
     const [rankx3, setRankx3] = useState(Number);
 
@@ -13,78 +18,65 @@ export function AchivmentsPvP(props: any) {
     const [insigniax3, setInsigniax3] = useState('');
 
     useEffect(() => {
-        const NAMESPACE = 'profile-us'
-        const LOCAL = 'en_US'
-        const REGION = 'us'
-        const pvp2x2Url = `https://us.api.blizzard.com/profile/wow/character/${props.kingdom}/${props.profile}/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=${props.access_token}`
-        const pvp3x3Url = `https://us.api.blizzard.com/profile/wow/character/${props.kingdom}/${props.profile}/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=${props.access_token}`
+        
+        const ranked2X2 = GetRanked2x2(props);
+        ranked2X2.then((props) => {
+            setRankx2(props.rating);
+            chackInsigniax2(props.rating);
+        }).catch(() => {
+            setRankx2(0);
+            chackInsigniax2(0);
+        });
 
-        fetch(pvp2x2Url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.code == 404) {
-                    setRankx2(0);
-                    chackInsigniax2(0)
-                } else {
-                    setRankx2(data.rating);
-                    chackInsigniax2(data.rating)
-                }
-            })
-            .catch(() => Alert.alert('Dados não carregados!'));
-
-        fetch(pvp3x3Url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.code == 404) {
-                    setRankx3(0);
-                    chackInsigniax3(0)
-                } else {
-                    setRankx3(data.rating);
-                    chackInsigniax3(data.rating)
-                }
-            })
-            .catch(() => Alert.alert('Dados não carregados!'));
+        const ranked3X3 = GetRanked3x3(props);
+        ranked3X3.then((props) => {
+            setRankx3(props.rating);
+            chackInsigniax3(props.rating);
+        }).catch(() => {
+            setRankx3(0);
+            chackInsigniax3(0);
+        });
     });
 
     function chackInsigniax2(rank: number) {
         if (rank <= 1399) {
-            setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/RJ6XE5WS8D6G1528483047503.png')
+            setInsigniax2(LOW_CR)
         }
         else if (rank >= 1400 && rank <= 1600) {
-            setInsigniax2('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_02.png')
+            setInsigniax2(COMBATENT)
         }
         else if (rank >= 1600 && rank <= 1800) {
-            setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/Q4TDZMWJS1DC1528483047584.png')
+            setInsigniax2(DESAFIANT)
         }
         else if (rank >= 1800 && rank <= 2100) {
-            setInsigniax2('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_04.png')
+            setInsigniax2(RIVAL)
         }
         else if (rank >= 2100 && rank <= 2400) {
-            setInsigniax2('https://bnetcmsus-a.akamaihd.net/cms/template_resource/9WPOSOBTK7GY1528483047820.png')
+            setInsigniax2(DUELIST)
         }
         else if (rank > 2400) {
-            setInsigniax2('https://www.wowchakra.com/wp-content/uploads/gallery/BFA_Ranked_PvP/UI_RankedPvP_07.png')
+            setInsigniax2(GLADIATOR)
         }
     }
 
     function chackInsigniax3(rank: number) {
         if (rank <= 1399) {
-            setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/RJ6XE5WS8D6G1528483047503.png')
+            setInsigniax3(LOW_CR)
         }
         else if (rank >= 1400 && rank <= 1600) {
-            setInsigniax3('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_02.png')
+            setInsigniax3(COMBATENT)
         }
         else if (rank >= 1600 && rank <= 1800) {
-            setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/Q4TDZMWJS1DC1528483047584.png')
+            setInsigniax3(DESAFIANT)
         }
         else if (rank >= 1800 && rank <= 2100) {
-            setInsigniax3('https://media.mmo-champion.com/images/news/2018/may/UI_RankedPvP_04.png')
+            setInsigniax3(RIVAL)
         }
         else if (rank >= 2100 && rank <= 2400) {
-            setInsigniax3('https://bnetcmsus-a.akamaihd.net/cms/template_resource/9WPOSOBTK7GY1528483047820.png')
+            setInsigniax3(DUELIST)
         }
         else if (rank > 2400) {
-            setInsigniax3('https://www.wowchakra.com/wp-content/uploads/gallery/BFA_Ranked_PvP/UI_RankedPvP_07.png')
+            setInsigniax3(GLADIATOR)
         }
     }
 
