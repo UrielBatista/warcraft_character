@@ -11,7 +11,8 @@ import {
     DESAFIANT,
     RIVAL,
     DUELIST,
-    GLADIATOR
+    GLADIATOR,
+    GRANT_TYPE
 
 } from "@env"
 
@@ -28,7 +29,8 @@ const environmentVariables = {
     DESAFIANT,
     RIVAL,
     DUELIST,
-    GLADIATOR
+    GLADIATOR,
+    GRANT_TYPE
 }
 
 export default environmentVariables

@@ -77,7 +77,7 @@ export function CharacterDatails() {
         const classCharacterSpec = GetClassCharacterSpec(kingdom, profile, access_token);
         classCharacterSpec.then((props) => {
             setClassCharacter(props.playable_class.name);
-            setSpecCharacter(props.active_spec.name);
+            props.active_spec == undefined ? setSpecCharacter("Undefined") : setSpecCharacter(props.active_spec.name);
             rendenizeClassCharacterSpec == true ? setRendenizeClassCharacterSpec(false) : setRendenizeClassCharacterSpec(true);
         }).catch(() => {
             console.log('Nothing data!!');

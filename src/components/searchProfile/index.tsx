@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Text, Alert } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
+import { GetCharacterMedia } from "../../services/getCharacterDetails";
 
-import envs from '../../Config/env';
 import { ImputData } from '../inputData'
 import { ButtonIcon } from '../buttonicon'
 import { styles } from "./styles";
@@ -16,8 +16,6 @@ type RequestCharacter = {
 }
 
 export function SearchProfile(data: any) {
-    const { API, NAMESPACE, LOCAL, REGION } = envs;
-
     const navigation = useNavigation();
     const [kingdom, setKingdom] = useState('Azralon');
     const [profile, setProfile] = useState('');
@@ -29,33 +27,31 @@ export function SearchProfile(data: any) {
     const handleSendInput = () => {
         const requestKingdom = kingdom.toLocaleLowerCase();
         const requestProfile = profile.toLocaleLowerCase();
-        const characterUrl = `${API}/${requestKingdom}/${requestProfile}/character-media?namespace=${NAMESPACE}&locale=${LOCAL}&%3Aregion=${REGION}&access_token=${data.name}`
+        const characterMediaDetails = GetCharacterMedia(requestKingdom, requestProfile, data.name);
 
-        fetch(characterUrl)
-            .then(response => response.json())
-            .then(data => {
-                var imageBackgroud = ''
-                if (!data.assets){
-                    const { value } = data.render_url as RequestCharacter;
-                    imageBackgroud = data.render_url;
-                } else {
-                    const { value } = data.assets[2].value as RequestCharacter;
-                    imageBackgroud = data.assets[2].value;
-                }
-                const { access_token } = token as RequestCharacter;
-                const { kingdom_character } = data.character.realm.slug as RequestCharacter
-                const { profile_character } = data.character.name as RequestCharacter
-                cleanInputs()
-                navigation.navigate('CharacterDatails' as never, 
-                { 
-                    value: imageBackgroud, 
-                    access_token: token,
-                    kingdom_character: data.character.realm.slug,
-                    profile_character: data.character.name
-                } as never)
-                
-            })
-            .catch(() => Alert.alert('Dados enviados são inválidos!'));
+        characterMediaDetails.then((props) => {
+            var imageBackgroud = ''
+            if (!props.assets){
+                const { value } = props.render_url as RequestCharacter;
+                imageBackgroud = props.render_url;
+            } else {
+                const { value } = props.assets[2].value as RequestCharacter;
+                imageBackgroud = props.assets[2].value;
+            }
+            const { access_token } = token as RequestCharacter;
+            const { kingdom_character } = props.character.realm.slug as RequestCharacter
+            const { profile_character } = props.character.name as RequestCharacter
+            cleanInputs()
+            navigation.navigate('CharacterDatails' as never, 
+            { 
+                value: imageBackgroud, 
+                access_token: token,
+                kingdom_character: props.character.realm.slug,
+                profile_character: props.character.name
+            } as never)
+        }).catch(() => {
+            Alert.alert('Dados enviados são inválidos!');
+        });
     }
 
     const cleanInputs = () => {
@@ -74,7 +70,6 @@ export function SearchProfile(data: any) {
             </Text>
 
             <View style={styles.column}>
-                
                 
                 <Picker
                     style={styles.piker}
@@ -101,7 +96,6 @@ export function SearchProfile(data: any) {
             </View>
 
             <ButtonIcon title="Enviar" onPress={handleSendInput} />
-
             <ButtonIcon title="Log off" onPress={backToSignIn} />
 
         </View>
