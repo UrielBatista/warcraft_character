@@ -3,6 +3,7 @@ import { View, Text, Alert } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { GetCharacterMedia } from "../../services/getCharacterDetails";
+import RNPickerSelect from "react-native-picker-select";
 
 import { ImputData } from '../inputData'
 import { ButtonIcon } from '../buttonicon'
@@ -31,7 +32,7 @@ export function SearchProfile(data: any) {
 
         characterMediaDetails.then((props) => {
             var imageBackgroud = ''
-            if (!props.assets){
+            if (!props.assets) {
                 const { value } = props.render_url as RequestCharacter;
                 imageBackgroud = props.render_url;
             } else {
@@ -42,13 +43,13 @@ export function SearchProfile(data: any) {
             const { kingdom_character } = props.character.realm.slug as RequestCharacter
             const { profile_character } = props.character.name as RequestCharacter
             cleanInputs()
-            navigation.navigate('CharacterDatails' as never, 
-            { 
-                value: imageBackgroud, 
-                access_token: token,
-                kingdom_character: props.character.realm.slug,
-                profile_character: props.character.name
-            } as never)
+            navigation.navigate('CharacterDatails' as never,
+                {
+                    value: imageBackgroud,
+                    access_token: token,
+                    kingdom_character: props.character.realm.slug,
+                    profile_character: props.character.name
+                } as never)
         }).catch(() => {
             Alert.alert('Dados enviados são inválidos!');
         });
@@ -58,6 +59,17 @@ export function SearchProfile(data: any) {
         setKingdom('Azralon')
         setProfile('')
     }
+
+    const pickerStyle = {
+        inputIOS: {
+            color: 'black',
+            backgroundColor: '#FFF',
+            marginLeft: 20
+        },
+        placeholder: {
+            color: 'black',
+        }
+    };
 
     function backToSignIn() {
         navigation.navigate('SingIn' as never);
@@ -70,20 +82,22 @@ export function SearchProfile(data: any) {
             </Text>
 
             <View style={styles.column}>
-                
-                <Picker
-                    style={styles.piker}
-                    selectedValue={kingdom}
-                    onValueChange={(itemValue, itemIndex) => setKingdom(itemValue)}
-                >
-                    <Picker.Item label="Azralon" value="azralon" />
-                    <Picker.Item label="Gallywix" value="gallywix" />
-                    <Picker.Item label="Goldrinn" value="goldrinn" />
-                    <Picker.Item label="Nemesis" value="nemesis" />
-                    <Picker.Item label="Tol Barad" value="tol-barad" />
-                    <Picker.Item label="Tichondrius" value="tichondrius" />
-                </Picker>
-
+                <View style={styles.piker}>
+                    <Text></Text>
+                    <RNPickerSelect
+                        style={pickerStyle}
+                        onValueChange={(itemValue, itemIndex) => setKingdom(itemValue)}
+                        placeholder={{ label: "Select kingdom", value: null }}
+                        items={[
+                            { label: "Azralon", value: "azralon" },
+                            { label: "Gallywix", value: "gallywix" },
+                            { label: "Goldrinn", value: "goldrinn" },
+                            { label: "Nemesis", value: "nemesis" },
+                            { label: "Tol Barad", value: "tol-barad" },
+                            { label: "Tichondrius", value: "tichondrius" },
+                        ]}
+                    />
+                </View>
                 <Text style={styles.divider}>
                     -
                 </Text>
