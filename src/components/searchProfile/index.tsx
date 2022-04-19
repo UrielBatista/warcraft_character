@@ -56,7 +56,7 @@ export function SearchProfile(data: any) {
     }
 
     const cleanInputs = () => {
-        setKingdom('Azralon')
+        setKingdom('')
         setProfile('')
     }
 
@@ -87,7 +87,8 @@ export function SearchProfile(data: any) {
                     <RNPickerSelect
                         style={pickerStyle}
                         onValueChange={(itemValue, itemIndex) => setKingdom(itemValue)}
-                        placeholder={{ label: "Select kingdom", value: null }}
+                        value={kingdom}
+                        placeholder={{ label: "Select kingdom", value: '' }}
                         items={[
                             { label: "Azralon", value: "azralon" },
                             { label: "Gallywix", value: "gallywix" },

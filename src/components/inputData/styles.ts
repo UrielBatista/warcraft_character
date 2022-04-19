@@ -5,8 +5,8 @@ export const styles = StyleSheet.create({
   container: {
     width: 150,
     height: 48,
-    backgroundColor: 'black',
-    color: '#FFF',
+    backgroundColor: '#FFF',
+    color: 'black',
     borderRadius: 8,
     fontFamily: theme.fonts.title400,
     fontSize: 13,
