@@ -4,7 +4,6 @@ import { StatusBar } from 'react-native';
 import { Domine_700Bold, Domine_400Regular, Domine_500Medium } from '@expo-google-fonts/domine';
 import { useFonts } from "expo-font";
 import AppLoading from 'expo-app-loading';
-import { Background } from "./src/components/background";
 
 
 import { Routes } from './src/routes';
