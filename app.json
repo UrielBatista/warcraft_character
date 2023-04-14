@@ -11,7 +11,8 @@
       "backgroundColor": "#170e09"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/a37ab66b-4351-4fee-9a39-7dab1f972840"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -30,6 +31,14 @@
       "favicon": "./assets/favicon.png"
     },
     "description": "improviment in select reing to IOS SO.",
-    "githubUrl": "https://github.com/UrielBatista/warcraft_character"
+    "githubUrl": "https://github.com/UrielBatista/warcraft_character",
+    "extra": {
+      "eas": {
+        "projectId": "a37ab66b-4351-4fee-9a39-7dab1f972840"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }

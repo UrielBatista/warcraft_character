@@ -51,6 +51,8 @@ export function CharacterDatails() {
     const kingdom = kingdom_character
     const profile = profile_character.toLocaleLowerCase();
     const imageCharacter = value;
+    
+    const classCharacterSpec = GetClassCharacterSpec(kingdom, profile, access_token);
 
     useEffect(() => {
         const attributesCharacterDetails = GetAttributesDetailsCharacter(kingdom, profile, access_token);
@@ -73,8 +75,9 @@ export function CharacterDatails() {
         });
     });
 
+    
+
     function handleClickImage() {
-        const classCharacterSpec = GetClassCharacterSpec(kingdom, profile, access_token);
         classCharacterSpec.then((props) => {
             setClassCharacter(props.playable_class.name);
             props.active_spec == undefined ? setSpecCharacter("Undefined") : setSpecCharacter(props.active_spec.name);
